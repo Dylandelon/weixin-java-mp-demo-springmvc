@@ -10,11 +10,13 @@
 		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 	<!-- only scan the Controller class for web context -->
 	<context:component-scan base-package="com.github.binarywang.demo.spring.controller" />
+	<context:component-scan base-package="com.srpgroup.iot.wx.controller" />
 
 	<mvc:annotation-driven>
 		<mvc:message-converters>
-			<ref bean="jsonConverter" />
+			<!--亲测这货本应string顺序放json之前，才可实现对于application/json的request在Controller中直接转出String格式的Body，这个需求一般在需要中转application/json的string格式的情况，不然一般还是json放前面比较高效。Fightfa注-->
 			<ref bean="stringHttpMessageConverter" />
+			<ref bean="jsonConverter" />
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 
@@ -26,6 +28,7 @@
 			<list>
 				<value>text/html;charset=UTF-8</value>
 				<value>text/plain;charset=UTF-8</value>
+				<value>application/json;charset=UTF-8</value>
 			</list>
 		</property>
 	</bean>

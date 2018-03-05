@@ -1,0 +1,6 @@
+host=tcp://127.0.0.1
+port=11883
+wx2mqtt_userName=server
+wx2mqtt_clientId=server
+wx2mqtt_passWord=password
+

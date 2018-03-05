@@ -1,43 +1,38 @@
 package com.github.binarywang.demo.spring.service;
 
-import javax.annotation.PostConstruct;
-
-import me.chanjar.weixin.mp.constant.WxMpEventConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.github.binarywang.demo.spring.config.WxMpConfig;
-import com.github.binarywang.demo.spring.handler.AbstractHandler;
-import com.github.binarywang.demo.spring.handler.KfSessionHandler;
-import com.github.binarywang.demo.spring.handler.LocationHandler;
-import com.github.binarywang.demo.spring.handler.LogHandler;
-import com.github.binarywang.demo.spring.handler.MenuHandler;
-import com.github.binarywang.demo.spring.handler.MsgHandler;
-import com.github.binarywang.demo.spring.handler.NullHandler;
-import com.github.binarywang.demo.spring.handler.StoreCheckNotifyHandler;
-import com.github.binarywang.demo.spring.handler.SubscribeHandler;
-import com.github.binarywang.demo.spring.handler.UnsubscribeHandler;
-
-import me.chanjar.weixin.common.api.WxConsts;
+import com.github.binarywang.demo.spring.handler.*;
+import com.srpgroup.iot.service.WxIotDeviceService;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
 import me.chanjar.weixin.mp.bean.kefu.result.WxMpKfOnlineList;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+import me.chanjar.weixin.mp.constant.WxMpEventConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 import static me.chanjar.weixin.common.api.WxConsts.*;
 
 /**
  * 
  * @author Binary Wang
- *
+ *  @mender fightfa 加了WxIotDeviceService，2017.12
  */
 @Service
 public class WeixinService extends WxMpServiceImpl {
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+  public WxIotDeviceService getWxIotDeviceService() {
+    return wxIotDeviceService;
+  }
+
+  private WxIotDeviceService wxIotDeviceService=new WxIotDeviceService(this);
 
   @Autowired
   protected LogHandler logHandler;
@@ -99,7 +94,13 @@ public class WeixinService extends WxMpServiceImpl {
     newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
             .event(WxMpEventConstants.CustomerService.KF_SWITCH_SESSION)
         .handler(this.kfSessionHandler).end();
-    
+
+    // 微信硬件平台iot设备事件
+//    newRouter.rule().async(false).msgType(XmlMsgType.DEVICE_EVENT)
+//            .event(MenuButtonType.CLICK).handler(this.getDeviceEventBindHandler()).end();
+
+
+
     // 门店审核事件
     newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
       .event(WxMpEventConstants.POI_CHECK_NOTIFY)
@@ -187,5 +188,6 @@ public class WeixinService extends WxMpServiceImpl {
   protected AbstractHandler getScanHandler() {
     return null;
   }
+
 
 }
