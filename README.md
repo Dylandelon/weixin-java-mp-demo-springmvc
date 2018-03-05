@@ -7,7 +7,7 @@
 ### 欢迎帮忙维护添加新功能，或提供更好的实现。
 ###修改内容：
 主要增加了com.srpgroup包，修改了原demo包中spring.service.WexinService.java，在pom.xml中增加mqtt库等。
-## 具体说明见 简书上 ![https://www.jianshu.com/p/f8892a8b3fc7](https://www.jianshu.com/p/f8892a8b3fc7)
+## 具体说明见 简书上 https://www.jianshu.com/p/f8892a8b3fc7
 ## 使用步骤：
 1. 配置: 复制/src/main/resources/wx.properties.template 生成 wx.properties 文件，填写相关配置;
 1. 配置: 复制/src/main/resources/mqtt.properties.template 生成 mqtt.properties 文件，填写相关配置;		
